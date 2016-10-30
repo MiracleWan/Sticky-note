@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>工作便签</title>
+	<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+	<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+	<!-- CSS overrides - remove if you don't need it -->
+	<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<section class="todoapp" ng-app="todoApp" ng-controller='todoController'>
+	<header class="header">
+		<h1>便签</h1>
+		<form ng-submit="addTodo()">
+			<input class="new-todo" ng-model="todo" placeholder="快来,别让自己停下来" autofocus>
+		</form>
+	</header>
+	<!-- This section should be hidden by default and shown when there are todos -->
+	<section class="main">
+		<input class="toggle-all" ng-hide="!todoList.length" ng-click="changeToggleAll()" type="checkbox"
+			   ng-model="toggleAll">
+		<label for="toggle-all">Mark all as complete</label>
+		<ul class="todo-list">
+			<li ng-repeat="todo in todoList|filter:completedStatus track by $index"
+				ng-class="{completed:todo.completed,editing:todo==edtingTodo}">
+				<div class="view">
+					<input ng-click="saveTodo()" class="toggle" type="checkbox" ng-model="todo.completed">
+					<label ng-dblclick="editTodo(todo)" ng-bind="todo.text"></label>
+					<button ng-click="delTodo(todo)" class="destroy"></button>
+				</div>
+				<input class="edit" ng-blur="saveTodo()" ng-model="todo.text">
+			</li>
+		</ul>
+	</section>
+	<!-- This footer should hidden by default and shown when there are todos -->
+	<footer ng-hide="!todoList.length" class="footer">
+		<!-- This should be `0 items left` by default -->
+		<span class="todo-count"><strong ng-bind="todoCount">0</strong>&nbsp;条未完成</span>
+		<!-- Remove this if you don't implement routing -->
+		<ul class="filters">
+			<li>
+				<a ng-click="changeStatus('all')" ng-class="{selected:completedStatus.completed==undefined}"
+				   class="selected" href="#/">全部便签</a>
+			</li>
+			<li>
+				<a ng-click="changeStatus('active')" ng-class="{selected:completedStatus.completed==false}"
+				   href="#/active">未完成</a>
+			</li>
+			<li>
+				<a ng-click="changeStatus('completed')" ng-class="{selected:completedStatus.completed==true}"
+				   href="#/completed">已完成</a>
+			</li>
+		</ul>
+		<!-- Hidden if no completed items are left ↓ -->
+		<button ng-click=" clearCompleted()" ng-show="isShowCompleted" class="clear-completed">清除所有已完成便签
+		</button>
+	</footer>
+</section>
+<footer class="info">
+	<p>双击编辑待办事项</p>
+	<!-- Remove the below line ↓ -->
+	<p>模板来自<a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+	<!-- Change this out with your name and url ↓ -->
+	<p>更多请关注<a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+<script src="js/angular.js"></script>
+<script src="js/service.js"></script>
+<script src="js/derective.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
